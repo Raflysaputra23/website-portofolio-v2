@@ -9,7 +9,6 @@ const create = async (koleksi: string, data: any) => {
         await addDoc(collection(db, koleksi), data);
         return "success";
     } catch(error) {
-
         return "error";
     }
 }
