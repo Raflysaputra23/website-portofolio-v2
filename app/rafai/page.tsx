@@ -6,9 +6,9 @@ import { useState } from "react";
 
 
 const RafAI = () => {
-    const [ messages, setMessages ] = useState([]);
+    // const [ messages, setMessages ] = useState([]);
     const [ chat, setChat ] = useState('');
-    const [ file, setFile ] = useState(null);
+    // const [ file, setFile ] = useState(null);
     const [ disable, setDisable ] = useState(true);
 
     const handleChat = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import app from "./firebase";
 import { addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 
@@ -11,6 +9,7 @@ const create = async (koleksi: string, data: any) => {
         await addDoc(collection(db, koleksi), data);
         return "success";
     } catch(error) {
+
         return "error";
     }
 }
