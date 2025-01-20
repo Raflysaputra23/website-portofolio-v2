@@ -4,7 +4,7 @@ const Footer = () => {
     <footer id="footer" className="container w-screen px-20 py-5 mx-auto bg-slate-900 flex justify-between flex-wrap gap-8">  
         <section className="flex flex-col items-center flex-grow order-1 md:order-1">
             <h1 className="font-bold text-lg text-slate-100 mb-3">Copyright</h1>
-            <p className="text-sm text-slate-300">&copy; 2024 RafAI</p>
+            <p className="text-sm text-slate-300 text-center">&copy; 2025 M. Rafly Saputra - All Right Reserved</p>
         </section>
         <section className="flex flex-col items-center basis-80 flex-grow order-3 md:order-2">
             <h1 className="font-bold text-lg text-slate-100">Follow Sosmed</h1>

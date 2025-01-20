@@ -1,3 +1,6 @@
+"use client"
+
+import { motion } from "motion/react";
 
 const About = () => {
   return (
@@ -8,35 +11,31 @@ const About = () => {
         <section className="flex gap-2 flex-wrap">
             <section className="p-4 rounded-md bg-slate-900 text-white flex-grow basis-full">
                 <header className="flex gap-2">
-                    <i className="bx bxs-objects-vertical-bottom text-2xl text-blue-500"></i>
-                    <h1 className="text-lg mb-2 font-bold">Skill</h1>
-                </header>
-                <p className="text-sm text-slate-300">
-                    Skill yang dimiliki RAFAI adalah mampu menganalisis sebuah gambar dan bisa membaca gambar tersebut, RAFAI juga memiliki kemampuan untuk menganalisis sebuah video bahkan bisa merangkum isi video dan juga anda bisa memberikan spesifik waktu untuk video tersebut, dan juga RAFAI bisa membaca sebuah file pdf dengan baik, RAFAI juga mampu membaca sebuah codingan, meresolve codingan, dan bisa membantu anda dalam membuat codingan.
-                </p>
-            </section>
-            <section className="p-4 rounded-md bg-slate-900 text-white flex-grow basis-60">
-                <header className="flex gap-2">
                     <i className="bx bxs-rocket text-2xl text-red-500"></i>
                     <h1 className="text-lg mb-2 font-bold">About Me</h1>
                 </header>
                 <p className="text-sm text-slate-300">
-                    RAFAI adalah sebuah kecerdasan buatan yang dirancang untuk mempermudah manusia dengan tool-tool yang disediakan, RAFAI juga memiliki kemampuan untuk berkomunikasi dengan anda layaknya mengobrol dengan manusia.
+                    Saya adalah seorang mahasiswa yang sedang berkuliah di Universitas Lampung, saya sangat suka sekali dengan pemrograman terutama dibidang WEB dan AI, saya juga mempunyai pengalaman dalam membuat beberapa aplikasi di bidang WEB dan AI, dan saya akan terus mengembangkan skill saya sehingga mampu menjadi seorang profesional di dunia IT.
                 </p>
             </section>
             <section className="p-4 rounded-md bg-slate-900 text-white flex-grow basis-60">
                 <header className="flex gap-2">
-                    <i className='bx bxs-happy text-2xl text-green-500'></i>
+                    <i className='bx bxs-objects-vertical-bottom text-2xl text-blue-500'></i>
                     <h1 className="text-lg mb-2 font-bold">Experience</h1>
                 </header>
-                <p className="text-sm text-slate-300">Kemudahan yang dimiliki RAFAI adalah mampu menganalisis sebuah gambar dan bisa membaca gambar tersebut.</p>
+                <p className="text-sm text-slate-300">Saya memiliki pengalaman dalam membuat beberapa aplikasi di bidang WEB dan AI, saya pernah membuat sebuah program bot wa yang didalamnya ada fitur Chat AI dan beberapa fitur bermanfaat lainnya, dan saya sudah terjun didunia IT selama 3.5 tahun</p>
             </section>
             <section className="p-4 rounded-md bg-slate-900 text-white flex-grow basis-60">
                 <header className="flex gap-2">
                     <i className='bx bx-trending-up text-2xl text-yellow-500'></i>
-                    <h1 className="text-lg mb-2 font-bold">Purpose</h1>
+                    <h1 className="text-lg mb-2 font-bold">My Hobby</h1>
                 </header>
-                <p className="text-sm text-slate-300">Tujuan dari aplikasi website ini adalah memberikan kemudahan kepada pengguna dengan tools yang sudah disediakan oleh RAFAI.</p>
+                <section className="flex flex-wrap gap-2 items-start">
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1 }} className="text-sm text-center text-slate-300 py-2 px-3 bg-slate-800 border border-slate-700 rounded-md">Coding</motion.div>   
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1 }} className="text-sm text-center text-slate-300 py-2 px-3 bg-slate-800 border border-slate-700 rounded-md">Playing Computer</motion.div>   
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1 }} className="text-sm text-center text-slate-300 py-2 px-3 bg-slate-800 border border-slate-700 rounded-md">Create Project</motion.div>   
+                    <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 1 }} className="text-sm text-center text-slate-300 py-2 px-3 bg-slate-800 border border-slate-700 rounded-md">Olahraga</motion.div>   
+                </section>
             </section>
         </section>
     </section>
