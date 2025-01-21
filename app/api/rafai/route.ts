@@ -27,7 +27,11 @@ export const POST = async (req: Request) => {
             const fileName: string = `Upload-${date}-${file.name}`;
             const arrayBuffer = await file.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
-            fs.writeFileSync(path.join(__dirname, `../../uploads/${fileName}`), buffer);
+            const dirPath = path.join(__dirname, `../../uploads/`);
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+            fs.writeFileSync(`${dirPath}${fileName}`, buffer);
             const response = await RafAI(chat, newSession, fileName, file.type);
             return new Response(JSON.stringify({ message: "Success", data: response, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
         } else {
