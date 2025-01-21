@@ -3,6 +3,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FileState, GoogleAIFileManager } from "@google/generative-ai/server";
 import fs from "fs";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 interface Part {
     text: string
