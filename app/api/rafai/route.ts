@@ -2,7 +2,11 @@
 import RafAI from "@/app/utils/rafai";
 import { validasiToken } from "@/app/utils/token";
 import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const POST = async (req: Request) => {
     try {
@@ -23,7 +27,7 @@ export const POST = async (req: Request) => {
             const fileName: string = `Upload-${date}-${file.name}`;
             const arrayBuffer = await file.arrayBuffer();
             const buffer = Buffer.from(arrayBuffer);
-            fs.writeFileSync(`./public/uploads/${fileName}`, buffer);
+            fs.writeFileSync(path.join(__dirname, `../../uploads/${fileName}`), buffer);
             const response = await RafAI(chat, newSession, fileName, file.type);
             return new Response(JSON.stringify({ message: "Success", data: response, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
         } else {
