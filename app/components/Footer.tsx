@@ -9,10 +9,10 @@ const Footer = () => {
         <section className="flex flex-col items-center basis-80 flex-grow order-3 md:order-2">
             <h1 className="font-bold text-lg text-slate-100">Follow Sosmed</h1>
             <div className="flex items-center justify-center gap-2 mt-3">
-                <a href="" className="flex justify-center items-center w-8 h-8 rounded-md bg-slate-950 border border-slate-800 hover:bg-slate-800">
+                <a href="https://www.instagram.com/raflyyyyyyyy23" target="_blank" className="flex justify-center items-center w-8 h-8 rounded-md bg-slate-950 border border-slate-800 hover:bg-slate-800">
                     <i className="bx bxl-instagram text-2xl text-pink-500"></i>
                 </a>
-                <a href="" className="flex justify-center items-center w-8 h-8 rounded-md bg-slate-950 border border-slate-800 hover:bg-slate-800">
+                <a href="https://www.tiktok.com/@raflynation765" target="_blank" className="flex justify-center items-center w-8 h-8 rounded-md bg-slate-950 border border-slate-800 hover:bg-slate-800">
                     <i className="bx bxl-tiktok text-2xl text-slate-100"></i>
                 </a>
                 <a href="" className="flex justify-center items-center w-8 h-8 rounded-md bg-slate-950 border border-slate-800 hover:bg-slate-800">

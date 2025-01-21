@@ -1,3 +1,5 @@
+"use server";
+
 import jwt from "jsonwebtoken";
 
 const validasiToken = (token: string) => {
@@ -22,7 +24,7 @@ type DataProps = {
 }
 
 const createToken = (data: DataProps) => {
-  return jwt.sign(data, process.env.SECRET_KEY_VALIDATION as string);
+  return jwt.sign(data, process.env.SECRET_KEY_VALIDATION as string, { expiresIn: "1m" });
 };
 
 export { validasiToken, createToken };

@@ -38,7 +38,7 @@ const NavBar = ({ Links }: { Links: React.ReactNode[] }) => {
         <section className="items-center justify-end gap-3 flex-grow hidden lg:flex">
             {Links.map((link) => link )}
         </section>
-        <section ref={useWaktu} className="w-24 py-2 rounded-md bg-slate-800 text-white flex items-center justify-center lg:hidden">
+        <section ref={useWaktu} className="w-24 py-2 rounded-md bg-slate-800 border border-slate-700 text-white flex items-center justify-center lg:hidden">
           00:00:00
         </section>
     </nav>
