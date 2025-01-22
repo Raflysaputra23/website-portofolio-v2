@@ -31,7 +31,6 @@ const RafAI = () => {
             setDisableReset(false);
         }
         messageRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-        console.log(messageRef.current);
     }, [messages]);
 
     useEffect(() => {
@@ -118,9 +117,9 @@ const RafAI = () => {
             <button className="absolute -bottom-14 left-2 text-lg h-8 w-8 flex items-center justify-center rounded-md shadow bg-red-500 hover:bg-red-700 disabled:bg-slate-800 z-10" disabled={disableReset} onClick={handleReset}><i className='bx bx-reset'></i></button>
         </nav>
         <section className="container lg:w-11/12 mx-auto mt-3 mb-2 pb-4 text-white flex flex-col justify-between h-4/5">
-            <section className={`flex flex-col bg-slate-900 rounded-md pl-3 p-2 gap-3 overflow-y-auto overflow-x-hidden lg:p-3 flex-grow relative`}>
+            <section className={`flex flex-col bg-slate-900 rounded-md pl-3 p-2 gap-3 overflow-y-auto overflow-x-auto lg:p-3 flex-grow relative`}>
                 {messages.length === 0 && (
-                    <h1 ref={messageRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl">Hi, I&apos;M RafAI</h1>
+                    <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl">Hi, I&apos;M RafAI</h1>
                 )}   
                 {messages && messages.map((item: { role: string; message: string }, index) => (
                     <section ref={messageRef} key={index} className={`${item.role === "user" ? "self-end max-w-[80%] bg-slate-800 rounded-md p-2 px-3" : "self-start"}`}>
