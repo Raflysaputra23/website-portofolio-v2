@@ -123,7 +123,7 @@ const RafAI = () => {
                     {messages && messages.map((item: { role: string; message: string }, index) => (
                         <section ref={messageRef} key={index} className={`max-w-[90%] mb-3 ${item.role === "user" ? "self-end" : "self-start"}`}>
                             <h1 className={`font-bold mb-1 ${item.role === "user" ? "text-end" : "text-start"}`}>{item.role === "user" ? "Anda " : "RafAI "}{item.role === "user" ? <i className="bx bxs-user text-blue-500"></i> : <i className="bx bxs-bot text-green-500"></i>}</h1>
-                            <section className="bg-slate-800 p-3 rounded-md relative">
+                            <section className="bg-slate-800 p-3 rounded-md relative overflow-x-auto overflow-y-hidden">
                                 {item.role === "user" ? (
                                     <p className="text-sm whitespace-pre-wrap text-slate-200">{item.message}</p>
                                 ) : (
