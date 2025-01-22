@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
 import remarkGfm from 'remark-gfm';
+import SyntaxHigh from './SyntaxHigh';
 
 const CodeBlock = ({message}: {message: string}) => {
     const [width, setWidth] = useState("300px"); 
@@ -32,19 +31,9 @@ const CodeBlock = ({message}: {message: string}) => {
         code({ className, children, ...props }) {
           const language = className?.replace("language-", "");
           return language ? (
-            <SyntaxHighlighter
-              style={okaidia as any} 
-              language={language} 
-              PreTag="div"
-              {...props}    
-              customStyle={{
-                width: width,
-                maxWidth: "100%",
-                overflowX: "auto", 
-              }}
-            >
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
+            <SyntaxHigh language={language} width={width} props={props}>
+                {children}
+            </SyntaxHigh>
           ) : (
             <code className={`${className} !bg-slate-600 !px-[.2rem] !p-[.1rem] !rounded-sm`} {...props}>
               {children}
