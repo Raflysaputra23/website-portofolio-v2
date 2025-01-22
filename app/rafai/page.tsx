@@ -141,12 +141,12 @@ const RafAI = () => {
                     </section>
                 )}
                 <form action="" className="flex gap-2 p-2 items-center bg-slate-800" onSubmit={handleSubmit}>
-                    <button type="button" className="text-sm h-8 w-10 flex items-center justify-center rounded-md shadow bg-slate-900 hover:bg-blue-800 relative">
+                    <button type="button" className="text-sm h-10 w-12 flex items-center justify-center rounded-md shadow bg-slate-900 hover:bg-blue-800 relative">
                         <i className="bx bx-image-add"></i>
                         <input type="file" className="absolute opacity-0 top-0 left-0 right-0 bottom-0" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFile(e?.target?.files?.[0] || false)}/>
                     </button>
-                    <input type="text" value={chat} name="chat" className="w-full px-2 py-1 rounded-md bg-slate-800 border border-slate-600" disabled={disableInput} onChange={handleChat}/>
-                    <button type="submit" className="text-sm h-8 w-10 flex items-center justify-center rounded-md shadow bg-slate-900 hover:bg-blue-800 disabled:bg-red-500" disabled={disable}>{loading ? <svg className="animate-spin h-5 w-5 border-r-2 border-b-2 border-white rounded-full" viewBox="0 0 24 24"></svg> : <i className="bx bx-send"></i>}</button>
+                    <input type="text" value={chat} name="chat" className="w-full text-sm p-3 rounded-md bg-slate-800 border border-slate-600" disabled={disableInput} onChange={handleChat} placeholder="Ask Anything"/>
+                    <button type="submit" className="text-sm h-10 w-12 flex items-center justify-center rounded-md shadow bg-slate-900 hover:bg-blue-800 disabled:bg-red-500" disabled={disable}>{loading ? <svg className="animate-spin h-5 w-5 border-r-2 border-b-2 border-white rounded-full" viewBox="0 0 24 24"></svg> : <i className="bx bx-send"></i>}</button>
                 </form>
             </section>
         </section>

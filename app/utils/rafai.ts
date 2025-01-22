@@ -34,7 +34,7 @@ const uploadFileManager = async (displayName: string, mimeType: string) => {
     let file = await fileManager.getFile(name);
     while (file.state === FileState.PROCESSING) {
         process.stdout.write('.');
-        await new Promise(resolve => setTimeout(resolve, 10_000));
+        await new Promise(resolve => setTimeout(resolve, 2_000));
         file = await fileManager.getFile(name);
     }
 
