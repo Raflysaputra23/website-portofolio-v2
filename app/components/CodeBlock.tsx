@@ -33,10 +33,10 @@ const CodeBlock = ({message}: {message: string}) => {
           const language = className?.replace("language-", "");
           return language ? (
             <SyntaxHighlighter
-              style={okaidia as React.CSSProperties} 
+              style={okaidia as any} 
               language={language} 
               PreTag="div"
-              {...props}
+              {...props}    
               customStyle={{
                 width: width,
                 maxWidth: "100%",
