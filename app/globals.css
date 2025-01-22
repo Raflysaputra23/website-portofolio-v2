@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.revert * {
+    all: revert;
+}
+
 .focus-input:focus ~ label,
 .focus-input:valid ~ label {
     top: -20px;
@@ -12,3 +16,11 @@
     background-color: blue;
     padding: 2px 5px;
 }
+
+#message h3 {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+}
+
+
+  

@@ -105,7 +105,6 @@ Peran anda:
                 resolve(
                     { role: "model", message: result.response.text() }
                 );
-                
             } else {
                 const result = await chat.sendMessage(message);
                 resolve(
