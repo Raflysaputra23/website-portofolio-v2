@@ -4,12 +4,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FileState, GoogleAIFileManager } from "@google/generative-ai/server";
 import fs from "fs";
 import path from "path";
+// import os from "os";
 import * as dotenv from "dotenv";
-import { fileURLToPath } from "url";
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 interface Part {
     text: string
@@ -26,11 +24,11 @@ interface FileData {
 }
 
 const uploadFileManager = async (displayName: string, mimeType: string) => {
-    const fileManager = new GoogleAIFileManager(process.env.RAFAI_APIKEY as string);
-    const uploadFile = await fileManager.uploadFile(path.join(__dirname, `../uploads/${displayName}`), {
-        mimeType,
-        displayName 
-    });
+        const fileManager = new GoogleAIFileManager(process.env.RAFAI_APIKEY as string);
+        const uploadFile = await fileManager.uploadFile(path.join("/tmp", displayName), {
+            mimeType,
+            displayName 
+        });
 
     const name = uploadFile.file.name;
     let file = await fileManager.getFile(name);
@@ -41,7 +39,7 @@ const uploadFileManager = async (displayName: string, mimeType: string) => {
     }
 
     if (file.state === FileState.ACTIVE) {
-        fs.unlinkSync(path.join(__dirname, `../uploads/${displayName}`));
+        fs.unlinkSync(path.join("/tmp", displayName));
         return {
             fileData: {
                 mimeType: uploadFile.file.mimeType,
@@ -49,7 +47,7 @@ const uploadFileManager = async (displayName: string, mimeType: string) => {
             }
         };
     } else {
-        fs.unlinkSync(path.join(__dirname, `../uploads/${displayName}`));
+        fs.unlinkSync(path.join("/tmp", displayName));
         return false;
     } 
 }
