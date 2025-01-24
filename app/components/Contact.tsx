@@ -75,6 +75,16 @@ const Contact = () => {
         }
     }
 
+    const parseMessages = (count: number) => {
+        if(count >= 1000000) {
+            return `${(count / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+        } else if(count >= 1000) {
+            return `${(count / 1000).toFixed(1).replace(/\.0$/, "")}K`;
+        } else {
+            return count;
+        }
+    };
+
     const renderedMessages = useMemo(() => (
         messages.map((item, index) => (
             <section key={index} className="max-w-md mb-3 self-start">
@@ -93,9 +103,16 @@ const Contact = () => {
         </header>
         <section className="flex gap-2 flex-wrap">
             <section className="flex-grow basis-96 bg-slate-900 rounded-md p-4 text-slate-300">
-                <header className="flex items-center gap-2 mb-4">
-                    <i className="bx bxs-chat text-xl text-blue-800"></i>
-                    <h1>Live Chat</h1>
+                <header className="flex items-center justify-between mb-4">
+                    <section className="flex items-center gap-2">
+                        <i className="bx bxs-chat text-xl text-blue-800"></i>
+                        <h1>Live Chat</h1>
+                    </section>
+                    <section className="flex items-center gap-2">
+                        <i className='bx bxs-message-dots text-3xl text-blue-800 relative'>
+                            <p className={`absolute -top-3 -right-3 bg-red-500 rounded-full text-slate-100 text-xs ${messages.length > 1000 ? "w-7 h-7" : "w-6 h-6"} flex items-center justify-center`}>{parseMessages(messages.length)}</p>
+                        </i>
+                    </section>
                 </header>
                 <section className="bg-slate-800 rounded-md p-3 flex flex-col max-h-96 overflow-auto mb-2">
                     {renderedMessages}
