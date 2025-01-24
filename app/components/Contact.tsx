@@ -1,21 +1,90 @@
 "use client"
-import { useRef, useState } from "react";
+
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as motion from "motion/react-client";
 import Image from "next/image";
+import { MixinAlert } from "../utils/alert";
+import { createToken } from "../utils/token";
+
+interface Messages {
+    role: string;
+    username: string;
+    message: string;
+}
 
 const Contact = () => {
     const constraintsRef = useRef<HTMLDivElement>(null);
-    const [ chat, setChat ] = useState("");
-    const [ disable, setDisable ] = useState(true);
+    const [ chat, setChat ] = useState<string>("");
+    const [ username, setUsername ] = useState<string>("");
+    const [ revalidate, setRevalidate ] = useState<boolean>(false);
+    const [ messages, setMessages ] = useState<Messages[]>([]);
+    const [ disable, setDisable ] = useState<boolean>(true);
+    const [ loading, setLoading ] = useState<boolean>(false);
 
-    const handleChat = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setChat(e.target.value);
-      if(e.target.value) {
-        setDisable(false);
-      } else {
-        setDisable(true);
-      }
+    useEffect(() => {
+        try {
+            fetch("api/chat", {
+                method: "GET",
+            })
+            .then((res) => res.json())
+            .then((data) => setMessages(data.data))
+            .catch((data) => setMessages(data.data));
+        } catch(error) {
+            
+        }
+    }, [revalidate]);
+
+    useEffect(() => {
+        if(chat && username) {
+            setDisable(false);
+        }else {
+            setDisable(true);
+        };
+    }, [chat, username]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            setDisable(true);
+            const data = { role: "user", username, message: chat };
+            const token = await createToken();
+            const response = await fetch("api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            })
+
+            if(response.ok) {
+                setRevalidate(!revalidate);
+                MixinAlert("success", "Success, your message has been sent");
+            } else {
+                MixinAlert("error", "Failed to send message");
+            }
+            setLoading(false);
+            setDisable(false);
+            setUsername("");
+            setChat("");
+        } catch(error) {
+            MixinAlert("error", error);
+            setLoading(false);
+            setDisable(false);
+        }
     }
+
+    const renderedMessages = useMemo(() => (
+        messages.map((item, index) => (
+            <section key={index} className="max-w-md mb-3 self-start">
+                <h1 className="font-bold mb-1 text-start">{item.username}</h1>
+                <section className="bg-slate-900 p-3 rounded-md">
+                    <p className="text-sm">{item.message}</p>
+                </section>
+            </section>
+        ))
+    ), [messages]);
  
   return (
     <section id="contact" className="container max-w-6xl w-11/12 px-4 py-3 mx-auto my-16">
@@ -29,29 +98,21 @@ const Contact = () => {
                     <h1>Live Chat</h1>
                 </header>
                 <section className="bg-slate-800 rounded-md p-3 flex flex-col max-h-96 overflow-auto mb-2">
-                    <section className="max-w-md mb-3 self-start">
-                        <h1 className="font-bold mb-1 text-start">Rafly</h1>
-                        <section className="bg-slate-900 p-3 rounded-md">
-                            <p className="text-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam id omnis veritatis dignissimos consectetur debitis expedita. Atque tempore incidunt, animi adipisci repellat dignissimos amet asperiores dolorum quis numquam fugiat quam.</p>
-                        </section>
-                    </section>
-                    <section className="max-w-md mb-3 self-end">
-                        <h1 className="font-bold mb-1 text-end">Rafly</h1>
-                        <section className="bg-slate-900 p-3 rounded-md">
-                            <p className="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda eos aperiam beatae corrupti itaque veniam dolore magnam quis, harum amet quisquam maxime nulla obcaecati iure numquam ea saepe tempore est?</p>
-                        </section>
-                    </section>
-                    <section className="max-w-md mb-3 self-end">
-                        <h1 className="font-bold mb-1 text-end">Rafly</h1>
-                        <section className="bg-slate-900 p-3 rounded-md">
-                            <p className="text-sm">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Assumenda eos aperiam beatae corrupti itaque veniam dolore magnam quis, harum amet quisquam maxime nulla obcaecati iure numquam ea saepe tempore est?</p>
-                        </section>
-                    </section>
+                    {renderedMessages}
                 </section>
-                <section className="bg-slate-800 rounded-md p-3 flex items-center gap-2">
-                    <input type="text" value={chat} className="w-full bg-slate-900 rounded-md p-2" onChange={handleChat} />
-                    <button className={`h-10 w-10 flex items-center bg-slate-900 justify-center rounded-md shadow transition shadow-blue-950 hover:bg-blue-900 disabled:bg-white/35 disabled:cursor-default`} disabled={disable}><i className="bx bx-send text-xl"></i></button>
-                </section>
+                <form className="bg-slate-800 rounded-md p-3" onSubmit={handleSubmit}>
+                    <section className="flex items-center w-full gap-2 mb-2 flex-wrap lg:flex-nowrap">
+                        <section className="lg:basis-1/4 basis-full">
+                            <label htmlFor="username" className="text-sm inline-block mb-1">Username</label>
+                            <input type="text" value={username} name="username" className="w-full bg-slate-900 rounded-md p-2" placeholder="Udin" onChange={(e) => setUsername(e.target.value)} />
+                        </section>
+                        <section className="lg:basis-3/4 basis-full">
+                            <label htmlFor="message" className="text-sm inline-block mb-1">Pesan</label>
+                            <input type="text" value={chat} name="chat" className="w-full bg-slate-900 rounded-md p-2" placeholder="Ganteng banget sih ><" onChange={(e) => setChat(e.target.value)} />
+                        </section>
+                    </section>
+                    <button type="submit" className={`h-10 w-full flex items-center bg-slate-900 justify-center gap-2 rounded-md shadow transition shadow-blue-950 hover:bg-blue-900 disabled:bg-white/35 disabled:cursor-default`} disabled={disable}>{loading ? <svg className="animate-spin h-5 w-5 border-r-2 border-b-2 border-white rounded-full" viewBox="0 0 24 24"></svg> : <span>Kirim <i className="bx bx-send"></i></span>}</button>
+                </form>
             </section>
             <motion.div ref={constraintsRef} className="flex-grow basis-36 flex justify-center items-center bg-slate-900 rounded-md h-96 lg:h-auto relative ">
                 <motion.div

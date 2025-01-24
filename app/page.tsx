@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 import NavBar from "./components/NavBar";
 import Aside from "./components/Aside";
 import Dashboard from "./components/Dashboard";
@@ -8,7 +8,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Skill from "./components/Skill";
 
-const Home = () => {
+const Home = memo(() => {
   const Links = [
     <a key={1} href="#" className="text-sm h-10 w-10 flex items-center justify-center rounded-md shadow transition backdrop-blur-sm bg-white/5 lg:backdrop-blur-none lg:bg-transparent shadow-blue-950 hover:bg-blue-900"><i className="bx bx-home text-xl"></i></a>,
     <a key={2} href="#about" className="text-sm h-10 w-10 flex items-center justify-center rounded-md shadow transition backdrop-blur-sm bg-white/5 lg:backdrop-blur-none lg:bg-transparent shadow-blue-950 hover:bg-blue-900"><i className="bx bx-user-voice text-xl"></i></a>,
@@ -27,6 +27,8 @@ const Home = () => {
       <Footer />
     </Fragment>
   )
-}
+})
+
+Home.displayName = "Home"
 
 export default Home;
