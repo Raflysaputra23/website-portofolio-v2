@@ -1,12 +1,14 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import SyntaxHigh from './SyntaxHigh';
+import { MixinAlert } from '../utils/alert';
 
 const CodeBlock = ({message}: {message: string}) => {
-    const [width, setWidth] = useState("300px"); 
+    const [width, setWidth] = useState<string>("300px"); 
+    const [copy, setCopy] = useState<boolean>(false);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -24,6 +26,17 @@ const CodeBlock = ({message}: {message: string}) => {
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
+  const handleCopy = async (message: React.ReactNode) => {
+    try {
+      await navigator.clipboard.writeText(message as string);
+      MixinAlert("success", "Copied to clipboard");
+      setCopy(true);
+    } catch(error) {
+      MixinAlert("error", "Failed to clipboard");
+      setCopy(false);
+    }
+  }
+
   return (
     <ReactMarkdown
       className={"text-slate-100 revert"}
@@ -31,9 +44,12 @@ const CodeBlock = ({message}: {message: string}) => {
         code({ className, children, ...props }) {
           const language = className?.replace("language-", "");
           return language ? (
-            <SyntaxHigh language={language} width={width} props={props}>
+            <section style={{ position: "relative" }}>
+              <button onClick={() => handleCopy(children)}>{copy ? (<i className='bx bx-check'></i>) : (<i className='bx bxs-copy-alt'></i>)}</button>
+              <SyntaxHigh language={language} width={width} props={props}>
                 {children}
-            </SyntaxHigh>
+              </SyntaxHigh>
+            </section>
           ) : (
             <code className={`${className} !bg-slate-600 !px-[.2rem] !p-[.1rem] !rounded-sm`} {...props}>
               {children}

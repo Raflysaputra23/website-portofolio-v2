@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createToken } from "../utils/token";
 import CodeBlock from "../components/CodeBlock";
 
@@ -25,49 +25,39 @@ const RafAI = () => {
     const messageRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if(messages.length == 0) {
-            setDisableReset(true);
-        } else {
-            setDisableReset(false);
-        }
+        setDisableReset(messages.length === 0);
         messageRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     }, [messages]);
 
     useEffect(() => {
-        if(localStorage.getItem("messages")) {
-            setMessages(JSON.parse(localStorage.getItem("messages")!));
-        } else {
-            setMessages([]);
-            localStorage.setItem("messages", JSON.stringify([]));
+        const storedMessages = localStorage.getItem("messages");
+        if (storedMessages) {
+            setMessages(JSON.parse(storedMessages));
         }
     }, []);
 
     const handleChat = (e: React.ChangeEvent<HTMLInputElement>) => {
         setChat(e.target.value);
-        if(e.target.value.length > 0) {
-            setDisable(false);
-        } else {
-            setDisable(true);
-        }
-    }
+        setDisable(e.target.value.length <= 0);
+    };
 
     const handleReset = () => {
         localStorage.removeItem("messages");
         setMessages([]);
+        setChat('');
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            setChat("");
+            setLoading(true);
             setDisable(true);
             setDisableInput(true);
-            setFile(false);
-            setLoading(true);
             const userChat = [...messages, { role: "user", message: chat }];
             setMessages(userChat);
+            
             const session: string = JSON.stringify(userChat);
-            const token = await createToken({ username: "Rafly", email: "rafai@google.com" });
+            const token = await createToken();
 
             const formData = new FormData();
             formData.append("chat", chat);
@@ -87,8 +77,8 @@ const RafAI = () => {
             });
 
             if(response.ok) {
-                const respon: { data: ResponseMessage } = await response.json();
-                const botChat = [...userChat, respon.data];
+                const { data }: { data: ResponseMessage } = await response.json();
+                const botChat = [...userChat, data];
                 setMessages(botChat);
                 localStorage.setItem("messages", JSON.stringify(botChat));
             } else {
@@ -97,12 +87,27 @@ const RafAI = () => {
                 localStorage.setItem("messages", JSON.stringify(botChat));
             }
 
+            setChat("");    
+            setFile(false);
             setDisableInput(false);
             setLoading(false);
         } catch(error) {
             console.log(error);
+            setLoading(false);
         }
     }
+
+    const renderedMessages = useMemo(() => (
+        messages.map((item, index) => (
+          <section ref={messageRef} key={index} className={`${item.role === "user" ? "self-end max-w-[80%] bg-slate-700 rounded-md p-2 px-3" : "self-start"}`}>
+            {item.role === "user" ? (
+              <p>{item.message}</p>
+            ) : (
+              <CodeBlock message={item.message} />
+            )}
+          </section>
+        ))
+    ), [messages]);
 
   return (
     <main className="h-screen overflow-hidden">
@@ -121,15 +126,7 @@ const RafAI = () => {
                 {messages.length === 0 && (
                     <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl">Hi, I&apos;M RafAI</h1>
                 )}   
-                {messages && messages.map((item: { role: string; message: string }, index) => (
-                    <section ref={messageRef} key={index} className={`${item.role === "user" ? "self-end max-w-[80%] bg-slate-800 rounded-md p-2 px-3" : "self-start"}`}>
-                        {item.role === "user" ? (
-                           <p>{item.message}</p>
-                        ): (
-                            <CodeBlock message={item.message} />
-                        )}
-                    </section>
-                ))}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                {renderedMessages}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
             </section>
             <form action="" className="flex w-full lg:w-11/12 fixed bottom-0 mx-auto gap-2 p-2 items-center bg-slate-800 rounded-md" onSubmit={handleSubmit}>
                 {file && (

@@ -19,7 +19,7 @@ const SyntaxHigh = forwardRef<HTMLDivElement, SyntaxHighlighterProps & { width?:
             maxWidth: "100%",
             overflowX: "auto",
           }}
-        >
+        >  
           {String(children).replace(/\n$/, "")}
         </SyntaxHighlighter>
       );

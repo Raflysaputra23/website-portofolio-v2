@@ -23,8 +23,8 @@ type DataProps = {
   email: string;
 }
 
-const createToken = (data: DataProps) => {
-  return jwt.sign(data, process.env.SECRET_KEY_VALIDATION as string, { expiresIn: "1m" });
+const createToken = () => {
+  return jwt.sign({ username: "M. Rafly Saputra", email: "raflysl23@gmail.com" }, process.env.SECRET_KEY_VALIDATION as string, { expiresIn: "1m" });
 };
 
 export { validasiToken, createToken };
