@@ -97,12 +97,12 @@ const Contact = () => {
     ), [messages]);
  
   return (
-    <section id="contact" className="container max-w-6xl w-11/12 px-4 py-3 mx-auto my-16">
+    <section id="contact" className="container max-w-6xl w-full lg:w-11/12 px-4 py-3 mx-auto my-16">
         <header className="px-7 py-2 rounded-md bg-slate-900 text-white inline-block mb-6">
             <h1 id="about" className="">Contact Me</h1>
         </header>
         <section className="flex gap-2 flex-wrap">
-            <section className="flex-grow basis-96 bg-slate-900 rounded-md p-4 text-slate-300">
+            <section className="flex-grow basis-full lg:basis-96 bg-slate-900 rounded-md p-4 text-slate-300">
                 <header className="flex items-center justify-between mb-4">
                     <section className="flex items-center gap-2">
                         <i className="bx bxs-chat text-xl text-blue-800"></i>
@@ -131,7 +131,7 @@ const Contact = () => {
                     <button type="submit" className={`h-10 w-full flex items-center bg-slate-900 justify-center gap-2 rounded-md shadow transition shadow-blue-950 hover:bg-blue-900 disabled:bg-white/35 disabled:cursor-default`} disabled={disable}>{loading ? <svg className="animate-spin h-5 w-5 border-r-2 border-b-2 border-white rounded-full" viewBox="0 0 24 24"></svg> : <span>Kirim <i className="bx bx-send"></i></span>}</button>
                 </form>
             </section>
-            <motion.div ref={constraintsRef} className="flex-grow basis-36 flex justify-center items-center bg-slate-900 rounded-md h-96 lg:h-auto relative ">
+            <motion.div ref={constraintsRef} className="flex-grow basis-full lg:basis-36 flex justify-center items-center bg-slate-900 rounded-md h-96 lg:h-auto relative ">
                 <motion.div
                     drag
                     dragConstraints={constraintsRef}
