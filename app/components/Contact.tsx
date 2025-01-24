@@ -117,9 +117,9 @@ const Contact = () => {
 
     const renderedMessages = useMemo(() => (
         messages.map((item, index) => (
-            <section ref={messageRef} key={index} className="max-w-md mb-3 self-start">
+            <section ref={messageRef} key={index} className="mb-3 self-start">
                 <h1 className="font-bold text-start">{item.username}</h1>    
-                <section className="bg-slate-900 p-3 rounded-md mb-1">
+                <section className="bg-slate-900 p-2 rounded-md mb-1">
                     <p className="text-sm">{item.message}</p>
                 </section>
                 <section className="flex items-center gap-1 text-xs text-slate-400">
