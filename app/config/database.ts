@@ -20,7 +20,7 @@ const readRealTime = () => {
 const createData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await addDoc(collection(db, "message"), {...data, createdAt: serverTimestamp()});
+            await addDoc(collection(db, "message"), data);
             resolve("Data berhasil disimpan");
         } catch (error) {
             reject("Data gagal disimpan");

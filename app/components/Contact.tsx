@@ -10,6 +10,7 @@ interface Messages {
     role: string;
     username: string;
     message: string;
+    createdAt: any;
 }
 
 const Contact = () => {
@@ -20,6 +21,7 @@ const Contact = () => {
     const [ messages, setMessages ] = useState<Messages[]>([]);
     const [ disable, setDisable ] = useState<boolean>(true);
     const [ loading, setLoading ] = useState<boolean>(false);
+    const messageRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         try {
@@ -32,6 +34,7 @@ const Contact = () => {
         } catch(error) {
             
         }
+        messageRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, [revalidate]);
 
     useEffect(() => {
@@ -47,7 +50,7 @@ const Contact = () => {
         try {
             setLoading(true);
             setDisable(true);
-            const data = { role: "user", username, message: chat };
+            const data = { role: "user", username, message: chat, createdAt: new Date().getTime() };
             const token = await createToken();
             const response = await fetch("api/chat", {
                 method: "POST",
@@ -85,12 +88,45 @@ const Contact = () => {
         }
     };
 
+    const parseDatePost = (date: any) => {
+        const dateNow = new Date();
+        const diff = dateNow.getTime() - date;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(months / 12);
+
+        if(years > 0) {
+            return `${years} tahun yang lalu`;
+        } else if(months > 0) {
+            return `${months} bulan yang lalu`;
+        } else if(days > 0) {
+            return `${days} hari yang lalu`;
+        } else if(hours > 0) {
+            return `${hours} jam yang lalu`;
+        } else if(minutes > 0) {
+            return `${minutes} menit yang lalu`;
+        } else if(seconds > 0) {
+            return `${seconds} detik yang lalu`;
+        } else {
+            return "baru saja";
+        }
+    }
+
     const renderedMessages = useMemo(() => (
         messages.map((item, index) => (
-            <section key={index} className="max-w-md mb-3 self-start">
+            <section ref={messageRef} key={index} className="max-w-md mb-3 self-start">
                 <h1 className="font-bold mb-1 text-start">{item.username}</h1>
-                <section className="bg-slate-900 p-3 rounded-md">
-                    <p className="text-sm">{item.message}</p>
+                <section className="flex items-center gap-2">
+                    <section className="bg-slate-900 p-3 rounded-md">
+                        <p className="text-sm">{item.message}</p>
+                    </section>
+                    <section className="flex items-center gap-1 text-xs text-slate-400">
+                        <i className='bx bxs-time'></i>
+                        {parseDatePost(item.createdAt)}
+                    </section>
                 </section>
             </section>
         ))
