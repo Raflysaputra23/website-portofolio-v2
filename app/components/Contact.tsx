@@ -60,9 +60,9 @@ const Contact = () => {
 
             if(response.ok) {
                 setRevalidate(!revalidate);
-                MixinAlert("success", "Success, your message has been sent");
+                MixinAlert("success", "Pesan berhasil dikirim");
             } else {
-                MixinAlert("error", "Failed to send message");
+                MixinAlert("error", "Pesan gagal dikirim");
             }
             setLoading(false);
             setDisable(false);
