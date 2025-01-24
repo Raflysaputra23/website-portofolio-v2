@@ -20,5 +20,14 @@ const MixinAlert = (type: AlertType, title: string) => {
       });
 }
 
-export { MixinAlert };
+const ModalAlert = (message: string) => {
+  Swal.fire({
+    title: "Information",
+    icon: "info",
+    html: message,
+    confirmButtonText: "OK BANG",
+  });
+}
+
+export { MixinAlert, ModalAlert };
 

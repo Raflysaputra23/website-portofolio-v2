@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createToken } from "../utils/token";
 import CodeBlock from "../components/CodeBlock";
+import { ModalAlert } from "../utils/alert";
 
 type ResponseMessage = {
     role: string;
@@ -30,6 +31,7 @@ const RafAI = () => {
     }, [messages]);
 
     useEffect(() => {
+        ModalAlert("RafAI sekarang ada versi WA BOT nya Loch, klik link <a target='_blank' style='color: #0000ff; font-weight: bold' href='https://wa.me/6281234567890?text=Halo'>RafAI WA BOT</a> untuk menggunakan RafAI WA BOT");
         const storedMessages = localStorage.getItem("messages");
         if (storedMessages) {
             setMessages(JSON.parse(storedMessages));
