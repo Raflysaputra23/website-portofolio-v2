@@ -1,4 +1,4 @@
-import { addDoc, collection, getFirestore, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, getFirestore, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import app from "./firebase";
 
 
@@ -6,7 +6,8 @@ const db = getFirestore(app);
 
 const readRealTime = () => {
     return new Promise((resolve, reject) => {
-        onSnapshot(collection(db, "message"), (snapshot) => {
+        const q = query(collection(db, "message"), orderBy("createdAt", "asc")); 
+        onSnapshot(q, (snapshot) => {
             if(snapshot.empty) {
                 reject([]);
             } else {
@@ -19,7 +20,7 @@ const readRealTime = () => {
 const createData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await addDoc(collection(db, "message"), data);
+            await addDoc(collection(db, "message"), {...data, createdAt: serverTimestamp()});
             resolve("Data berhasil disimpan");
         } catch (error) {
             reject("Data gagal disimpan");
