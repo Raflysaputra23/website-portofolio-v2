@@ -5,6 +5,17 @@ import fs from "fs";
 import path from "path";
 
 
+const ReadStream = (stream: any) => {
+    return new ReadableStream({
+        async start(controller) {
+            for await (const chunk of stream) {
+                controller.enqueue(chunk.text());
+            }
+            controller.close();
+        }
+    })
+}
+
 export const POST = async (req: Request) => {
     try {
         const token = req?.headers?.get("authorization")?.split(" ")[1];
@@ -26,13 +37,26 @@ export const POST = async (req: Request) => {
             const buffer = Buffer.from(arrayBuffer);
             const dirPath = path.join("/tmp", fileName);
             fs.writeFileSync(dirPath, buffer);
-            const response = await RafAI(chat, newSession, fileName, file.type);
-            return new Response(JSON.stringify({ message: "Success", data: response, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
+            const response: any = await RafAI(chat, newSession, fileName, file.type);
+            const stream = ReadStream(response.message);
+            return new Response(stream, {
+                headers: {
+                    "Content-Type": "text/event-stream",
+                    "Cache-Control": "no-cache",
+                    "Connection": "keep-alive"
+                }
+            });
         } else {
-            const response = await RafAI(chat, newSession);
-            return new Response(JSON.stringify({ message: "Success", data: response, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
+            const response: any = await RafAI(chat, newSession);
+            const stream = ReadStream(response.message);
+            return new Response(stream, {
+                headers: {
+                    "Content-Type": "text/event-stream",
+                    "Cache-Control": "no-cache",
+                    "Connection": "keep-alive"
+                }
+            })
         }
-        
     } catch(error) {
         console.log(error);
         return new Response(JSON.stringify({ message: "Unauthorized", status: 401 }), { status: 401 });

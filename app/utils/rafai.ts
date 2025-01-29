@@ -101,15 +101,14 @@ Peran anda:
                 if(!fileData) {
                     reject("File not found");
                 }
-
-                const result = await model.generateContent([message, fileData]);
+                const result = await model.generateContentStream([message, fileData]);
                 resolve(
-                    { role: "model", message: result.response.text() }
+                    { role: "model", message: result }
                 );
             } else {
-                const result = await chat.sendMessage(message);
+                const result = await chat.sendMessageStream(message);
                 resolve(
-                    { role: "model", message: result.response.text() }
+                    { role: "model", message: result.stream }
                 );
             }
         } catch(error) {

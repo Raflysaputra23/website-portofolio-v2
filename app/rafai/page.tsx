@@ -33,9 +33,7 @@ const RafAI = () => {
     useEffect(() => {
         ModalAlert("RafAI sekarang ada versi WA BOT nya Loch, klik link <a target='_blank' style='color: #0000ff; font-weight: bold' href='https://wa.me/6285711037853?text=Halo'>RafAI WA BOT</a> untuk menggunakan RafAI WA BOT");
         const storedMessages = localStorage.getItem("messages");
-        if (storedMessages) {
-            setMessages(JSON.parse(storedMessages));
-        }
+        if (storedMessages) setMessages(JSON.parse(storedMessages));
     }, []);
 
     const handleChat = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -55,21 +53,23 @@ const RafAI = () => {
             setLoading(true);
             setDisable(true);
             setDisableInput(true);
+    
             const userChat = [...messages, { role: "user", message: chat }];
             setMessages(userChat);
-            
+    
             const session: string = JSON.stringify(userChat);
             const token = await createToken();
-
+    
             const formData = new FormData();
             formData.append("chat", chat);
             formData.append("session", session);
-            if(file) {
+    
+            if (file) {
                 formData.append("file", file as File);
                 const loadingFile = [...userChat, { role: "model", message: "Sedang menganalisis file..." }];
                 setMessages(loadingFile);
-            };
-
+            }
+    
             const response = await fetch("/api/rafai", {
                 method: "POST",
                 headers: {
@@ -77,27 +77,41 @@ const RafAI = () => {
                 },
                 body: formData
             });
-
-            if(response.ok) {
-                const { data }: { data: ResponseMessage } = await response.json();
-                const botChat = [...userChat, data];
-                setMessages(botChat);
-                localStorage.setItem("messages", JSON.stringify(botChat));
+    
+            if (response.ok) {
+                const reader = response.body?.getReader();
+                const decoder = new TextDecoder("utf-8");
+    
+                let aiMessage: string = "";
+                setMessages((prev: ResponseMessage[]) => [...prev, { role: "model", message: "" }]);
+    
+                while (reader) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+                    aiMessage += decoder.decode(value);
+                    setMessages((prev: ResponseMessage[]) => {
+                        const updatedMessages = [...prev];
+                        updatedMessages[updatedMessages.length - 1] = { role: "model", message: aiMessage };
+                        return updatedMessages;
+                    });
+                }
+                localStorage.setItem("messages", JSON.stringify([...userChat, { role: "model", message: aiMessage }]));
             } else {
-                const botChat = [...userChat, { role: "model", message: "Maaf RafAI sedang tidak bisa membaca file ini, silahkan file yang lain" }];
+                const botChat = [...userChat, { role: "model", message: "*Maaf RafAI sedang tidak dapat merespon, Coba beberapa saat lagi...*" }];
                 setMessages(botChat);
                 localStorage.setItem("messages", JSON.stringify(botChat));
             }
-
-            setChat("");    
+    
+            setChat("");
             setFile(false);
             setDisableInput(false);
             setLoading(false);
-        } catch(error) {
+        } catch (error) {
             console.log(error);
             setLoading(false);
         }
-    }
+    };
+    
 
     const renderedMessages = useMemo(() => (
         messages.map((item, index) => (
