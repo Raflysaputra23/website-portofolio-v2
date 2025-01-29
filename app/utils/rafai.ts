@@ -4,7 +4,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { FileState, GoogleAIFileManager } from "@google/generative-ai/server";
 import fs from "fs";
 import path from "path";
-// import os from "os";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -59,7 +58,7 @@ const RafAI = (message: string, session: Chat[], displayName: string = "", mimeT
         try {
             const genAI = new GoogleGenerativeAI(process.env.RAFAI_APIKEY as string);
             const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
+                model: "gemini-2.0-flash-exp",
                 systemInstruction: 
 `
 Anda adalah assisten yang bernama RafAI, yang dibuat oleh Rafly, Rafly adalah seseorang yang membuat anda dan menciptakan anda, dan Rafly juga yang mengembangkan anda.
