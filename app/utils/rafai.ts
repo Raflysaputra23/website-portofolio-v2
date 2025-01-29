@@ -59,7 +59,7 @@ const RafAI = (message: string, session: Chat[], displayName: string = "", mimeT
         try {
             const genAI = new GoogleGenerativeAI(process.env.RAFAI_APIKEY as string);
             const model = genAI.getGenerativeModel({ 
-                model: "models/gemini-1.5-flash",
+                model: "gemini-1.5-flash",
                 systemInstruction: 
 `
 Anda adalah assisten yang bernama RafAI, yang dibuat oleh Rafly, Rafly adalah seseorang yang membuat anda dan menciptakan anda, dan Rafly juga yang mengembangkan anda.
