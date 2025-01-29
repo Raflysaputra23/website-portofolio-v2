@@ -103,7 +103,7 @@ Peran anda:
                 }
                 const result = await model.generateContentStream([message, fileData]);
                 resolve(
-                    { role: "model", message: result }
+                    { role: "model", message: result.stream }
                 );
             } else {
                 const result = await chat.sendMessageStream(message);
