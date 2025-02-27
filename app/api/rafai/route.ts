@@ -53,7 +53,7 @@ export const POST = async (req: Request) => {
                 headers: {
                     "Content-Type": "text/event-stream",
                     "Cache-Control": "no-cache",
-                    "Connection": "keep-alive"
+                    "Connection": "keep-alive",
                 }
             })
         }

@@ -5,6 +5,7 @@ import * as motion from "motion/react-client";
 import Image from "next/image";
 import { MixinAlert } from "../utils/alert";
 import { createToken } from "../utils/token";
+import useSWR from "swr";
 
 interface Messages {
     role: string;
@@ -13,29 +14,21 @@ interface Messages {
     createdAt: any;
 }
 
+const fethcer = (url) => fetch(url).then((res) => res.json());
+
 const Contact = () => {
     const constraintsRef = useRef<HTMLDivElement>(null);
     const [ chat, setChat ] = useState<string>("");
     const [ username, setUsername ] = useState<string>("");
     const [ revalidate, setRevalidate ] = useState<boolean>(false);
-    const [ messages, setMessages ] = useState<Messages[]>([]);
     const [ disable, setDisable ] = useState<boolean>(true);
     const [ loading, setLoading ] = useState<boolean>(false);
     const messageRef = useRef<HTMLDivElement>(null);
-
+    const { data, isLoading, mutate } = useSWR("api/chat", fethcer);
+    
     useEffect(() => {
-        try {
-            fetch("api/chat", {
-                method: "GET",
-            })
-            .then((res) => res.json())
-            .then((data) => setMessages(data.data))
-            .catch((data) => setMessages(data.data));
-        } catch(error) {
-            
-        }
         messageRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, [revalidate]);
+    }, [revalidate, data]);
 
     useEffect(() => {
         if(chat && username) {
@@ -71,6 +64,7 @@ const Contact = () => {
             setDisable(false);
             setUsername("");
             setChat("");
+            mutate('/api/chat');
         } catch(error) {
             MixinAlert("error", error);
             setLoading(false);
@@ -116,7 +110,7 @@ const Contact = () => {
     }
 
     const renderedMessages = useMemo(() => (
-        messages.map((item, index) => (
+        !isLoading && data?.data ? data?.data?.map((item, index) => (
             <section ref={messageRef} key={index} className="mb-3 self-start">
                 <h1 className="font-bold text-start">{item.username}</h1>    
                 <section className="bg-slate-900 p-2 rounded-md mb-1">
@@ -127,8 +121,8 @@ const Contact = () => {
                         {parseDatePost(item.createdAt)}
                 </section>
             </section>
-        ))
-    ), [messages]);
+    )) : <svg className="animate-spin h-16 w-16 border-r-2 border-b-2 border-white rounded-full mx-auto my-5" viewBox="0 0 24 24"></svg>
+    ), [data]);
  
   return (
     <section id="contact" className="container max-w-6xl w-full lg:w-11/12 px-4 py-3 mx-auto my-16">
@@ -144,7 +138,7 @@ const Contact = () => {
                     </section>
                     <section className="flex items-center gap-2">
                         <i className='bx bxs-message-dots text-3xl text-blue-800 relative'>
-                            <p className={`absolute -top-3 -right-3 bg-red-500 rounded-full text-slate-100 text-xs ${messages.length > 1000 ? "w-7 h-7" : "w-6 h-6"} flex items-center justify-center`}>{parseMessages(messages.length)}</p>
+                            <p className={`absolute -top-3 -right-3 bg-red-500 rounded-full text-slate-100 text-xs ${data?.data?.length > 1000 ? "w-7 h-7" : "w-6 h-6"} flex items-center justify-center`}>{parseMessages(data?.data ? data?.data?.length : 0)}</p>
                         </i>
                     </section>
                 </header>

@@ -5,10 +5,8 @@ import { validasiToken } from "@/app/utils/token";
 export const GET = async (req: Request) => {
     try {
         const data = await readRealTime();
-        console.log(data);
         return new Response(JSON.stringify({ message: "Success", data, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
     } catch(data) {
-        console.log(data);
         return new Response(JSON.stringify({ message: "Success", data, status: 200 }), { status: 200, headers: { "Content-Type": "application/json" }});
     }
 }
