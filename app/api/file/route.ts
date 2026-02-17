@@ -1,11 +1,7 @@
 import fileManager from "@/app/utils/fileManager";
 import { validasiToken } from "@/app/utils/token";
 
-export const config = {
-    api: {
-        bodyParser: false
-    }
-}
+export const dynamic = "force-dynamic";
 
 export const POST = async (req: Request) => {
     try {

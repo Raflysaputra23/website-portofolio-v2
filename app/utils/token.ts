@@ -2,7 +2,7 @@
 
 import jwt from "jsonwebtoken";
 
-const validasiToken = (token: string) => {
+const validasiToken = async (token: string) => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
@@ -23,7 +23,7 @@ type DataProps = {
   email: string;
 }
 
-const createToken = () => {
+const createToken = async () => {
   return jwt.sign({ username: "M. Rafly Saputra", email: "raflysl23@gmail.com" }, process.env.SECRET_KEY_VALIDATION as string, { expiresIn: "1m" });
 };
 
